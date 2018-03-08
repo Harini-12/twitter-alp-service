@@ -121,9 +121,9 @@
 						<artifactItem>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${project.artifactId}</artifactId>
-							<version>${project.version}</version>
 							<type>war</type>
 							<overWrite>true</overWrite>
+							<finalName>${project.artifactId}</finalName>
 							<outputDirectory>target</outputDirectory>
 						</artifactItem>
 					</artifactItems>
