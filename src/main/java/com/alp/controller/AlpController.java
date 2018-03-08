@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alp.conn.MySQLConnection;
 import com.alp.dto.ProductCountDTO;
+import com.alp.dto.ProductCountResponse;
 import com.google.gson.Gson;
 
 @RestController
@@ -33,6 +34,7 @@ public class AlpController {
         ResultSet res;
         String jsonInString = null;
         Connection mysqlConn = MySQLConnection.conn();
+        ProductCountResponse productCountResponse = new ProductCountResponse();
         List<ProductCountDTO> productCountList = new ArrayList<ProductCountDTO>();
         try {
             stmt = mysqlConn.createStatement();
@@ -43,8 +45,9 @@ public class AlpController {
                 productCountDTO.setTotalCounts(res.getInt(2));
                 productCountList.add(productCountDTO);
             }
+            productCountResponse.setProductCountList(productCountList);
             Gson gson = new Gson();
-            jsonInString = gson.toJson(productCountList);
+            jsonInString = gson.toJson(productCountResponse);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
