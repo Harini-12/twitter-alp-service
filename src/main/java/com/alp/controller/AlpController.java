@@ -47,7 +47,7 @@ public class AlpController {
             }
             productCountResponse.setProductCountList(productCountList);
             Gson gson = new Gson();
-            jsonInString = gson.toJson(productCountResponse);
+            jsonInString = gson.toJson(productCountList);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
