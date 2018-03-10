@@ -11,7 +11,7 @@ public class HiveConnection {
         Connection con = null;
         try {
             Class.forName(hiveDriverName);
-            con = DriverManager.getConnection("jdbc:hive2://localhost:10000/twitter", "balachandrank30",
+            con = DriverManager.getConnection("jdbc:hive2://35.226.227.94:10000/twitter", "balachandrank30",
                     "balachandrank30");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

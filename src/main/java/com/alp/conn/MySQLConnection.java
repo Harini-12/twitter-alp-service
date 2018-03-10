@@ -11,7 +11,7 @@ public class MySQLConnection {
         Connection con = null;
         try {
             Class.forName(mysqlDriverName);
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/twitter", "root", "root");
+            con = DriverManager.getConnection("jdbc:mysql://35.226.227.94:3306/twitter", "root", "root");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
