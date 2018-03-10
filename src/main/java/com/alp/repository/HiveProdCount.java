@@ -23,6 +23,7 @@ public class HiveProdCount {
         List<ProductCountDTO> productCountList = new ArrayList<ProductCountDTO>();
         try {
             stmt = hiveConn.createStatement();
+            stmt.execute("msck repair table tweets");
             res = stmt.executeQuery("select * from product_count");
             while (res.next()) {
                 ProductCountDTO productCountDTO = new ProductCountDTO();
@@ -47,6 +48,8 @@ public class HiveProdCount {
     public void insertProductCount() {
         try {
             String query = "insert into product_counts (hashtags, total_counts) values (?, ?)";
+            stmt = mysqlConn.createStatement();
+            stmt.execute("truncate table product_counts");
             preparedStmt = mysqlConn.prepareStatement(query);
             List<ProductCountDTO> prodCountList = getProdCount();
             for (ProductCountDTO productCountDTO : prodCountList) {
