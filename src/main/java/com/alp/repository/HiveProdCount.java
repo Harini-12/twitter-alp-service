@@ -40,11 +40,11 @@ public class HiveProdCount {
 
     public void insertProductCount() {
         try {
+            List<ProductCountDTO> prodCountList = getProdCount();
             String query = "insert into product_counts (hashtags, total_counts) values (?, ?)";
             stmt = mysqlConn.createStatement();
             stmt.execute("truncate table product_counts");
-            preparedStmt = mysqlConn.prepareStatement(query);
-            List<ProductCountDTO> prodCountList = getProdCount();
+            preparedStmt = mysqlConn.prepareStatement(query);            
             for (ProductCountDTO productCountDTO : prodCountList) {
                 preparedStmt.setString(1, productCountDTO.getHashTags());
                 preparedStmt.setInt(2, productCountDTO.getTotalCounts());
@@ -75,11 +75,11 @@ public class HiveProdCount {
     
     public void insertTrendTweets() {
         try {
+            List<TrendTweetDTO> trendTweetList = getTrendTweets();
             String query = "insert into trending_tweets (hashtags, word, cnt) values (?, ?, ?)";
             stmt = mysqlConn.createStatement();
             stmt.execute("truncate table trending_tweets");
-            preparedStmt = mysqlConn.prepareStatement(query);
-            List<TrendTweetDTO> trendTweetList = getTrendTweets();
+            preparedStmt = mysqlConn.prepareStatement(query);            
             for (TrendTweetDTO trendTweetDTO : trendTweetList) {
                 preparedStmt.setString(1, trendTweetDTO.getHashTags());
                 preparedStmt.setString(2, trendTweetDTO.getWord());
