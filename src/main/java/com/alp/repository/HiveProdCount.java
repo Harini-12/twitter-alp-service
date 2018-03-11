@@ -12,6 +12,7 @@ import com.alp.conn.HiveConnection;
 import com.alp.conn.MySQLConnection;
 import com.alp.dto.ProductCountDTO;
 import com.alp.dto.TrendTweetDTO;
+import com.alp.dto.TweetSentimentDTO;
 
 public class HiveProdCount {
     private ResultSet res;
@@ -90,12 +91,49 @@ public class HiveProdCount {
             System.out.println(e.getMessage());
         } 
     }
+    
+    public List<TweetSentimentDTO> getTweetSentiment() {
+        List<TweetSentimentDTO> tweetSentimentList = new ArrayList<TweetSentimentDTO>();
+        try {
+            stmt = hiveConn.createStatement();
+            res = stmt.executeQuery("select * from tweets_sentiment");
+            while (res.next()) {
+            	TweetSentimentDTO tweetSentimentDTO = new TweetSentimentDTO();
+            	tweetSentimentDTO.setHashTags(res.getString(1));
+            	tweetSentimentDTO.setSentiment(res.getString(2));
+            	tweetSentimentDTO.setCnt(res.getInt(3));
+            	tweetSentimentList.add(tweetSentimentDTO);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+        return tweetSentimentList;
+    }
+    
+    public void insertTweetSentiment() {
+        try {
+            List<TweetSentimentDTO> tweetSentimentList = getTweetSentiment();
+            String query = "insert into tweets_sentiment (hashtags, sentiment , cnt) values (?, ?, ?)";
+            stmt = mysqlConn.createStatement();
+            stmt.execute("truncate table tweets_sentiment");
+            preparedStmt = mysqlConn.prepareStatement(query);            
+            for (TweetSentimentDTO tweetSentimentDTO : tweetSentimentList) {
+                preparedStmt.setString(1, tweetSentimentDTO.getHashTags());
+                preparedStmt.setString(2, tweetSentimentDTO.getSentiment());
+                preparedStmt.setInt(3, tweetSentimentDTO.getCnt());
+                preparedStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
 
     public static void main(String[] args) {
         try {
         HiveProdCount hpc = new HiveProdCount();
         hpc.insertProductCount();
         hpc.insertTrendTweets();
+        hpc.insertTweetSentiment();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
